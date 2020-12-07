@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+  </head>
+  <body>
+    <br />
+    <button id="getIncidents">Get Incidents</button>
+    <br />
+
+    <div id="output"></div>
+    <br />
+    <div>
+      <form id="formid">
+        <div>
+          <p>caller id:</p>
+          <input type="text" id="syscreatedby" name="sys_created_by" />
+        </div>
+        <div>
+          <p>message:</p>
+          <textarea
+            name="description"
+            id="description"
+            cols="40"
+            rows="4"
+          ></textarea>
+        </div>
+        <div>
+          <button type="submit">Send</button>
+        </div>
+      </form>
+      <br />
+      <p id="outputform"></p>
+    </div>
+
+    <script>
+      document.getElementById("getIncidents").addEventListener("click", getIncidents);
+
+      function getIncidents() {
+        var myHeaders = new Headers();
+        //myHeaders.append("Access-Control-Request-Headers", "*");
+        myHeaders.append("Authorization", "Basic YWRtaW46Q0ZTbDZkNnRzQUtu");
+        myHeaders.append(
+          "Cookie",
+          "BIGipServerpool_dev68381=2625853194.31808.0000; glide_user_route=glide.164b56fd79bf8339b0e79e43766b6bdb; glide_user_activity=U0N2MzpHSHNUSm04TUxobVlVL2F3TnJFMGpzdVMwYWRXOUFjVjpQeGNBY0k5czRiQXlLdk1Eblp1NWpGNU5Pc3NkWGxFZUJIQS9wRXhyYjYwPQ==; JSESSIONID=F1613F234947BB5B27BB13B8CC8D6404; glide_session_store=14015F062F20201019B2CFEDF699B666"
+        );
+
+        var requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        fetch(
+          "https://dev68381.service-now.com/api/now/table/incident/9d385017c611228701d22104cc95c371",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => console.log(result, result.result))
+          .catch((error) => console.log("error", error));
+      }
+
+      document.getElementById("formid").addEventListener("submit", sendText);
+
+      function sendText(e) {
+        e.preventDefault();
+        let sysCreatedBy = document.getElementById("syscreatedby").value;
+        let description = document.getElementById("description").value;
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Basic YWRtaW46Q0ZTbDZkNnRzQUtu");
+        myHeaders.append("Access-Control-Allow-Origin", "*");
+
+        var formdata = new FormData();
+        formdata.append("description", description.trim());
+        formdata.append("sys_created_by", sysCreatedBy.trim());
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: formdata,
+          redirect: "follow",
+        };
+
+        fetch(
+          "http://dev68381.service-now.com/api/now/table/incident",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result.result);
+          })
+          .catch((error) => console.log("error", error));
+      }
+    </script>
+  </body>
+</html>
