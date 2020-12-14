@@ -36,6 +36,8 @@ class Form extends Component {
         let { code, image, brand, description, colors, sizes, price } = this.state;
 
         return(
+            
+
             <form>
 
             <div className="row">   

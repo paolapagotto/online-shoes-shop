@@ -10,10 +10,9 @@ let TableHead = () => {
                 <th></th>
                 <th className="blue-grey-text  text-lighten-2">Brand</th>
                 <th className="blue-grey-text  text-lighten-2">Description</th>
-                <th className="blue-grey-text  text-lighten-2">Colors</th>
-                <th className="blue-grey-text  text-lighten-2">Sizes</th>
                 <th className="blue-grey-text  text-lighten-2">Price</th>
-                <th className="blue-grey-text  text-lighten-2" colspan="2">Actions</th>
+                <th className="blue-grey-text  text-lighten-2" colspan="2"></th>
+                {/* <th className="blue-grey-text  text-lighten-2"></th> */}
             </tr>
         </thead>
     );
@@ -28,29 +27,12 @@ let TableBody = props => {
                 <td> <img src={row.image} alt="shoes" width="200"></img></td>
                 <td>{row.brand}</td>
                 <td>{row.description}</td>
-                <td>
-
-                    <select id="shoescolors">
-                        <option value="" selected disabled>Color</option>
-                        <option value={row.colors[0]}>{row.colors[0]}</option>
-                        <option value={row.colors[1]}>{row.colors[1]}</option>
-                    </select>
-
-
-                </td>
-                <td>
-                    <select id="shoessizes">
-                        <option value="" selected disabled>Size</option>
-                        <option value={row.sizes[0]}>{row.sizes[0]}</option>
-                        <option value={row.sizes[1]}>{row.sizes[1]}</option>
-                        <option value={row.sizes[2]}>{row.sizes[2]}</option>
-                        <option value={row.sizes[3]}>{row.sizes[3]}</option>
-                        <option value={row.sizes[4]}>{row.sizes[4]}</option>
-                    </select>
-                </td>
                 <td>{row.price}</td>
-                <td><button className="waves-effect teal lighten-3 btn-small" >Add</button></td>
-                <td><button className="waves-effect teal lighten-3 btn-small" onClick={() => { props.removeShoes(index) }}>Remove</button></td>
+                <td><button onClick={ () => {props.onIncrement(index)} } className="waves-effect teal lighten-3 btn-small">Add</button></td>
+                {/* <td><button onClick={() => { props.handleDelete(index) }} className="waves-effect teal lighten-3 btn-small">Remove</button></td>
+                <td><span className={props.getBadgeClasses()}>{props.formatCount()}</span></td> */}
+                
+                
 
             </tr>
 
@@ -70,14 +52,26 @@ class Table extends Component {
 
     render() {
 
-        let { shoes, removeShoes } = this.props;
+        let { shoes, onReset, onDelete, onIncrement, removeShoes } = this.props;
 
         return (
 
-            <table className="centered responsive-table highlight">
+            <main className="container col s12 m12 l12">
+                <div className="row">
+                    <button onClick={ onReset } className="waves-effect teal lighten-5 red-text text-lighten-2 btn-small col s2 offset-s10">Reset Shop Cart</button>
+                </div>
+                <table className="centered responsive-table highlight">
                 <TableHead />
-                <TableBody shoes={shoes} removeShoes={removeShoes} />
-            </table>
+                <TableBody 
+                    shoes = { shoes } 
+                    onIncrement={ onIncrement }
+                    onDelete = { onDelete }
+                    removeShoes = { removeShoes } 
+                    selected = { true }
+                />
+                </table>
+            </main>
+            
         )
     }
 };
